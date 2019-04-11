@@ -45,6 +45,8 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
             entryImageView.image = nil
         }
         
+        date = entryDatePicker.date
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -125,8 +127,7 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
             }
         } else {
             if let trip = trip {
-                //If the entry is updated without changing the date, it will reset the date back to the current date
-                entry?.update(title: entryName, content: content, date: date ?? Date(timeIntervalSinceNow: 0), image: image, trip: trip)
+                entry?.update(title: entryName, content: content, date: date!, image: image, trip: trip)
             }
         }
         
