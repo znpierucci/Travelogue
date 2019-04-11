@@ -48,9 +48,9 @@ public class Entry: NSManagedObject {
         
         self.title = title
         self.content = content
+        //Eventually fix date to have date picker
         self.modifiedDate = Date(timeIntervalSinceNow: 0)
         self.trip = trip
-        //next statement is false
         if let image = image {
             self.image = convertImageToNSData(image: image)
         }
