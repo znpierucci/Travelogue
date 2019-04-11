@@ -37,7 +37,7 @@ public class Entry: NSManagedObject {
         }
     }
     
-    convenience init?(title: String?, content: String?, image: UIImage?, trip: Trip) {
+    convenience init?(title: String?, content: String?, date: Date, image: UIImage?, trip: Trip) {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         guard let managedContext = appDelegate?.persistentContainer.viewContext,
             let title = title, title != "" else {
@@ -48,8 +48,7 @@ public class Entry: NSManagedObject {
         
         self.title = title
         self.content = content
-        //Eventually fix date to have date picker
-        self.modifiedDate = Date(timeIntervalSinceNow: 0)
+        self.modifiedDate = date
         self.trip = trip
         if let image = image {
             self.image = convertImageToNSData(image: image)
@@ -57,10 +56,6 @@ public class Entry: NSManagedObject {
     }
     
     func convertImageToNSData(image: UIImage) -> NSData? {
-        // The image data can be represented as PNG or JPEG data formats.
-        // Both ways to format the image data are listed below and the JPEG version is the one being used.
-        
-        //return image.jpegData(compressionQuality: 1.0) as NSData?
         return processImage(image: image).pngData() as NSData?
     }
     
@@ -83,10 +78,10 @@ public class Entry: NSManagedObject {
         return unwrappedCopy
     }
     
-    func update(title: String, content: String?, image: UIImage?, trip: Trip) {
+    func update(title: String, content: String?, date: Date, image: UIImage?, trip: Trip) {
         self.title = title
         self.content = content
-        self.modifiedDate = Date(timeIntervalSinceNow: 0)
+        self.modifiedDate = date
         self.trip = trip
         if let image = image {
             self.image = convertImageToNSData(image: image)

@@ -12,15 +12,14 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentTextView: UITextView!
-    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var entryImageView: UIImageView!
+    @IBOutlet weak var entryDatePicker: UIDatePicker!
     
     var entry: Entry?
     var trip: Trip?
     var image: UIImage?
+    var date: Date?
     
-    let dateFormatter = DateFormatter()
-    let newEntryDateFormatter = DateFormatter()
     let imagePickerController = UIImagePickerController()
     
     override func viewDidLoad() {
@@ -32,25 +31,17 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
         contentTextView.layer.borderColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0).cgColor
         contentTextView.layer.cornerRadius = 6.0
         
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
-        
-        newEntryDateFormatter.dateStyle = .long
-        
         if let entry = entry {
             let name = entry.title
             titleTextField.text = name
             contentTextView.text = entry.content
             title = name
-            if let addDate = entry.modifiedDate {
-                dateLabel.text = dateFormatter.string(from: addDate)
-            }
+            entryDatePicker.date = entry.modifiedDate!
             image = entry.imageModified
             entryImageView.image = image
         } else {
             titleTextField.text = ""
             contentTextView.text = ""
-            dateLabel.text = newEntryDateFormatter.string(from: Date(timeIntervalSinceNow: 0))
             entryImageView.image = nil
         }
         
@@ -130,11 +121,12 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
         
         if entry == nil {
             if let trip = trip {
-                entry = Entry(title: entryName, content: content, image: image, trip: trip)
+                entry = Entry(title: entryName, content: content, date: date ?? Date(timeIntervalSinceNow: 0), image: image, trip: trip)
             }
         } else {
             if let trip = trip {
-                entry?.update(title: entryName, content: content, image: image, trip: trip)
+                //If the entry is updated without changing the date, it will reset the date back to the current date
+                entry?.update(title: entryName, content: content, date: date ?? Date(timeIntervalSinceNow: 0), image: image, trip: trip)
             }
         }
         
@@ -160,5 +152,8 @@ class NewEntryViewController: UIViewController, UIImagePickerControllerDelegate,
         selectImageSource()
     }
     
-
+    @IBAction func dateChanged(_ sender: Any) {
+        date = entryDatePicker.date
+    }
+    
 }

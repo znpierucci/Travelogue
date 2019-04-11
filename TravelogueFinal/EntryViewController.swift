@@ -21,8 +21,8 @@ class EntryViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         title = trip?.name ?? ""
         
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
         
         entryTableView.dataSource = self
         entryTableView.delegate = self

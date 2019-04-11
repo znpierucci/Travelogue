@@ -14,7 +14,7 @@ import CoreData
 public class Trip: NSManagedObject {
 
     convenience init?(name: String?) {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate  //UIKit is needed to access UIApplication
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
         guard let managedContext = appDelegate?.persistentContainer.viewContext,
             let name = name, name != "" else {
                 return nil
